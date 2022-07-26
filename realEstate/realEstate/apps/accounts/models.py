@@ -9,6 +9,26 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from .config import RoleChoices
 
 
+class IAMUser(models.Model):
+    username_validator = UnicodeUsernameValidator()
+    username = models.CharField(
+        _("username"),
+        max_length=150,
+        unique=True,
+        validators=[username_validator],
+        help_text=_(
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        ),
+        error_messages={
+            "unique": _("A user with that username already exists."),
+        },
+    )
+    password = models.CharField(_('IAM密码'), max_length=32, null=True, blank=True)
+    access_key = models.CharField(max_length=255, null=True, blank=True)
+    secret_key = models.CharField(max_length=255, null=True, blank=True)
+    role = models.CharField(choices=RoleChoices.choices, verbose_name=_('role'), max_length=25)
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
     username = models.CharField(
@@ -27,6 +47,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     role = models.CharField(choices=RoleChoices.choices, verbose_name=_('role'), max_length=25)
     access_key = models.CharField(max_length=255, null=True, blank=True)
     secret_key = models.CharField(max_length=255, null=True, blank=True)
+    region = models.CharField(_('战区'), max_length=50, null=True, blank=True)
+    company_name = models.CharField(_('公司'), max_length=255, null=True, blank=True)
+    iam_username = models.CharField(_('IAM账户名'), max_length=100, null=True, blank=True)
+    is_test = models.BooleanField(_('测试账户'), default=False)
+    oa_account = models.CharField(_('OA账户'), max_length=50, null=True, blank=True, unique=True, db_index=True)
+    phone = models.CharField(_('电话'), max_length=50, null=True, blank=True, unique=True, db_index=True)
+    iam_password = models.CharField(_('IAM密码'), max_length=32, null=True, blank=True)
+    email = models.EmailField(_("email address"), blank=True)
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
@@ -42,7 +70,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     is_admin = models.BooleanField(default=False)
-
+    iam_account = models.ManyToManyField(
+        IAMUser, related_name='users', related_query_name='user'
+    )
+    # email =
     objects = UserManager()
 
     USERNAME_FIELD = "username"
