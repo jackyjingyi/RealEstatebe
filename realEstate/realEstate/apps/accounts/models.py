@@ -6,10 +6,16 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import PermissionsMixin, UserManager, Group
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from nanoid import generate
 from .config import RoleChoices
 
 
+def nanoid_generate():
+    return generate(size=24)
+
+
 class IAMUser(models.Model):
+    id = models.CharField(_('用户ID'), max_length=25, default=nanoid_generate, primary_key=True)
     username_validator = UnicodeUsernameValidator()
     username = models.CharField(
         _("username"),
@@ -30,6 +36,7 @@ class IAMUser(models.Model):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    id = models.CharField(_('用户ID'), max_length=25, default=nanoid_generate, primary_key=True)
     username_validator = UnicodeUsernameValidator()
     username = models.CharField(
         _("username"),
@@ -48,6 +55,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     access_key = models.CharField(max_length=255, null=True, blank=True)
     secret_key = models.CharField(max_length=255, null=True, blank=True)
     region = models.CharField(_('战区'), max_length=50, null=True, blank=True)
+    company = models.ForeignKey('Company', on_delete=models.CASCADE, related_name='users', related_query_name='user',
+                                null=True, blank=True)
     company_name = models.CharField(_('公司'), max_length=255, null=True, blank=True)
     iam_username = models.CharField(_('IAM账户名'), max_length=100, null=True, blank=True)
     is_test = models.BooleanField(_('测试账户'), default=False)
@@ -73,7 +82,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     iam_account = models.ManyToManyField(
         IAMUser, related_name='users', related_query_name='user'
     )
-    # email =
+
     objects = UserManager()
 
     USERNAME_FIELD = "username"
@@ -81,7 +90,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _("user")
         verbose_name_plural = _("users")
-        # abstract = True
 
     def get_full_name(self):
         """
@@ -96,3 +104,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.name + " | " + str(self.username)
+
+
+class Company(models.Model):
+    id = models.CharField(_('组织ID'), max_length=25, default=nanoid_generate, primary_key=True)
+    name = models.CharField(_('公司名称'), max_length=150, db_index=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='children',
+                               related_query_name='child')
+    org_code = models.CharField(_('组织代码'), unique=True, max_length=25)
+    date_joined = models.DateTimeField(_("加入时间"), default=timezone.now)
+    is_active = models.BooleanField(_('激活'), default=True)
+    is_dept = models.BooleanField(_('是否部门'), default=False)
+    is_deleted = models.BooleanField(_('已删除'), default=False)
+    expire_dt = models.DateTimeField(_("过期时间"), null=True)
+
+    def __str__(self):
+        return self.name

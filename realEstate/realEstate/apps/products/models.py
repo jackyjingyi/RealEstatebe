@@ -9,6 +9,22 @@ def nanoid_generate():
     return generate(size=10)
 
 
+def buildings_image_upload_path_generate(instance, filename):
+    return f'buildings/{instance.region}/{instance.product_type}/image/{instance.product_code}-{instance.id}/{filename}'
+
+
+def buildings_thumbnail_upload_path_generate(instance, filename):
+    return f'buildings/{instance.region}/{instance.product_type}/thumbnail/{instance.product_code}-{instance.id}/{filename}'
+
+
+def house_image_upload_path_generate(instance, filename):
+    return f'house/{instance.building.region}/image/{instance.product_code}-{instance.id}/{filename}'
+
+
+def house_thumbnail_upload_path_generate(instance, filename):
+    return f'house/{instance.building.region}/thumbnail/{instance.product_code}-{instance.id}/{filename}'
+
+
 class BuildingProduct(models.Model):
     id = models.CharField(_('系统编码'), max_length=10, default=nanoid_generate, primary_key=True)
     product_code = models.CharField(_('产品编码'), max_length=100)
@@ -39,10 +55,10 @@ class BuildingProduct(models.Model):
     bucket_dir = models.TextField(_('桶文件夹地址'), null=True, blank=True)
     bucket_pdf = models.CharField(_('桶pdf文件地址'), max_length=255, null=True, blank=True)
     bucket_dwg = models.CharField(_('桶dwg文件地址'), max_length=255, null=True, blank=True)
-    image_url = models.TextField(_('桶dwg文件地址'), null=True, blank=True)
-    thumbnail_url = models.TextField(_('桶dwg文件地址'), null=True, blank=True)
-    image = models.ImageField(_('详情图'), null=True, blank=True)
-    thumbnail = models.ImageField(_('缩略图'), null=True, blank=True)
+    image_url = models.TextField(_('详情图地址'), null=True, blank=True)
+    thumbnail_url = models.TextField(_('缩略图地址'), null=True, blank=True)
+    image = models.ImageField(_('详情图'), null=True, blank=True, upload_to=buildings_image_upload_path_generate)
+    thumbnail = models.ImageField(_('缩略图'), null=True, blank=True, upload_to=buildings_thumbnail_upload_path_generate)
 
     def get_rate(self):
         if self.is_finished:
@@ -79,26 +95,26 @@ class House(models.Model):
     bucket_dwg = models.CharField(_('桶dwg文件地址'), max_length=255, null=True, blank=True)
     image_url = models.TextField(_('图片文件地址'), null=True, blank=True)
     thumbnail_url = models.TextField(_('缩略图文件地址'), null=True, blank=True)
-    image = models.ImageField(_('详情图'), null=True, blank=True)
-    thumbnail = models.ImageField(_('缩略图'), null=True, blank=True)
-    balcony_depth=models.FloatField(_('阳台-进深'), default=0, blank=True, null=True)
-    balcony_width=models.FloatField(_('阳台-开间'), default=0, blank=True, null=True)
-    hallway_depth=models.FloatField(_('玄关-进深'), default=0, blank=True, null=True)
-    hallway_width=models.FloatField(_('玄关-开间'), default=0, blank=True, null=True)
-    kitchen_depth=models.FloatField(_('厨房-进深'), default=0, blank=True, null=True)
-    kitchen_width=models.FloatField(_('厨房-开间'), default=0, blank=True, null=True)
-    living_room_depth=models.FloatField(_('客厅-进深'), default=0, blank=True, null=True)
-    living_room_width=models.FloatField(_('客厅-开间'), default=0, blank=True, null=True)
-    function_room_depth=models.FloatField(_('多功能房-进深'), default=0, blank=True, null=True)
-    function_room_width=models.FloatField(_('多功能房-开间'), default=0, blank=True, null=True)
-    master_bedroom_depth=models.FloatField(_('主卧-进深'), default=0, blank=True, null=True)
-    master_bedroom_width=models.FloatField(_('主卧-开间'), default=0, blank=True, null=True)
-    second_bedroom_depth=models.FloatField(_('次卧-进深'), default=0, blank=True, null=True)
-    second_bedroom_width=models.FloatField(_('次卧-开间'), default=0, blank=True, null=True)
-    master_bathroom_depth=models.FloatField(_('主卫-进深'), default=0, blank=True, null=True)
-    master_bathroom_width=models.FloatField(_('主卫-开间'), default=0, blank=True, null=True)
-    public_bathroom_depth=models.FloatField(_('公卫-进深'), default=0, blank=True, null=True)
-    public_bathroom_width=models.FloatField(_('公卫-开间'), default=0, blank=True, null=True)
+    image = models.ImageField(_('详情图'), null=True, blank=True, upload_to=house_image_upload_path_generate)
+    thumbnail = models.ImageField(_('缩略图'), null=True, blank=True, upload_to=house_thumbnail_upload_path_generate)
+    balcony_depth = models.FloatField(_('阳台-进深'), default=0, blank=True, null=True)
+    balcony_width = models.FloatField(_('阳台-开间'), default=0, blank=True, null=True)
+    hallway_depth = models.FloatField(_('玄关-进深'), default=0, blank=True, null=True)
+    hallway_width = models.FloatField(_('玄关-开间'), default=0, blank=True, null=True)
+    kitchen_depth = models.FloatField(_('厨房-进深'), default=0, blank=True, null=True)
+    kitchen_width = models.FloatField(_('厨房-开间'), default=0, blank=True, null=True)
+    living_room_depth = models.FloatField(_('客厅-进深'), default=0, blank=True, null=True)
+    living_room_width = models.FloatField(_('客厅-开间'), default=0, blank=True, null=True)
+    function_room_depth = models.FloatField(_('多功能房-进深'), default=0, blank=True, null=True)
+    function_room_width = models.FloatField(_('多功能房-开间'), default=0, blank=True, null=True)
+    master_bedroom_depth = models.FloatField(_('主卧-进深'), default=0, blank=True, null=True)
+    master_bedroom_width = models.FloatField(_('主卧-开间'), default=0, blank=True, null=True)
+    second_bedroom_depth = models.FloatField(_('次卧-进深'), default=0, blank=True, null=True)
+    second_bedroom_width = models.FloatField(_('次卧-开间'), default=0, blank=True, null=True)
+    master_bathroom_depth = models.FloatField(_('主卫-进深'), default=0, blank=True, null=True)
+    master_bathroom_width = models.FloatField(_('主卫-开间'), default=0, blank=True, null=True)
+    public_bathroom_depth = models.FloatField(_('公卫-进深'), default=0, blank=True, null=True)
+    public_bathroom_width = models.FloatField(_('公卫-开间'), default=0, blank=True, null=True)
 
     class Meta:
         db_table = 'house_product'
