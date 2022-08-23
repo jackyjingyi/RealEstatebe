@@ -80,7 +80,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     is_admin = models.BooleanField(default=False)
     iam_account = models.ManyToManyField(
-        IAMUser, related_name='users', related_query_name='user'
+        IAMUser, related_name='users', related_query_name='user',null=True, blank=True
     )
 
     objects = UserManager()

@@ -59,6 +59,7 @@ class BuildingProduct(models.Model):
     thumbnail_url = models.TextField(_('缩略图地址'), null=True, blank=True)
     image = models.ImageField(_('详情图'), null=True, blank=True, upload_to=buildings_image_upload_path_generate)
     thumbnail = models.ImageField(_('缩略图'), null=True, blank=True, upload_to=buildings_thumbnail_upload_path_generate)
+    ptype = models.CharField(_('类型'), max_length=25, default='building')
 
     def get_rate(self):
         if self.is_finished:
@@ -115,6 +116,7 @@ class House(models.Model):
     master_bathroom_width = models.FloatField(_('主卫-开间'), default=0, blank=True, null=True)
     public_bathroom_depth = models.FloatField(_('公卫-进深'), default=0, blank=True, null=True)
     public_bathroom_width = models.FloatField(_('公卫-开间'), default=0, blank=True, null=True)
+    ptype = models.CharField(_('类型'), max_length=25, default='house')
 
     class Meta:
         db_table = 'house_product'

@@ -33,6 +33,8 @@ class ProjectFiles(ProjectBase):
 
 class ProtocolMain(ProjectBase):
     # 项目用地条件及规划条件分析
+    project_name = models.CharField(_("项目名称"), max_length=255, default="test111")
+    project_region = models.CharField(_("归属"), max_length=255, default="")
     part1_p1 = models.OneToOneField("Protocol1_1", on_delete=models.CASCADE, null=True, blank=True)
     part1_p2 = models.OneToOneField("Protocol1_2", on_delete=models.CASCADE, null=True, blank=True)
     part1_p3 = models.OneToOneField("Protocol1_3", on_delete=models.CASCADE, null=True, blank=True)

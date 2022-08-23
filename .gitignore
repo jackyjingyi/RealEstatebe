@@ -135,3 +135,7 @@ GitHub.sublime-settings
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+/realEstate/tyadmin/node_modules/
+/realEstate/tyadmin/
+/realEstate/tyadmin_api/
+/realEstate/tyadmin_api/

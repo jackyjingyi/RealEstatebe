@@ -21,9 +21,9 @@ class Protocol1_3Serializers(serializers.ModelSerializer):
 
 
 class ProtocolMainSerializers(serializers.ModelSerializer):
-    part1_p1 = Protocol1_1Serializers()
-    part1_p2 = Protocol1_2Serializers()
-    part1_p3 = Protocol1_3Serializers()
+    # part1_p1 = Protocol1_1Serializers()
+    # part1_p2 = Protocol1_2Serializers()
+    # part1_p3 = Protocol1_3Serializers()
 
     class Meta:
         model = ProtocolMain
