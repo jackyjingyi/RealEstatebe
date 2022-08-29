@@ -34,6 +34,8 @@ class IAMUser(models.Model):
     secret_key = models.CharField(max_length=255, null=True, blank=True)
     role = models.CharField(choices=RoleChoices.choices, verbose_name=_('role'), max_length=25)
 
+    def __str__(self):
+        return self.username
 
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.CharField(_('用户ID'), max_length=25, default=nanoid_generate, primary_key=True)

@@ -8,4 +8,6 @@ class RoleChoices(models.TextChoices):
     REGION_COMPANY_LEADER = 'region_company_leader', _('战区领导')
     CITY_ACCOUNT = 'city_account', _('城市设计公司')  # 无上传权限
     CO_LEADER = 'group_leader', _('集团领导')
+    CO_Account = 'group_account',_('集团账户')
+    REGION_ACCOUNT_RES = 'region_account_res',_('战区账户-无上传')
 

@@ -49,22 +49,25 @@ class UserCreateView(generics.CreateAPIView):
         # if request.user.is_admin:
         #     # 判断是admin用户
         for u in data:
+            try:
+                print(u)
+                tmp = IAMUser(
+                    username=u.get('username'),
+                    password=u.get('password'),
+                    access_key=u.get('access_key'),
+                    secret_key=u.get('secret_key'),
+                    role=u.get('role')
+                )
+                tmp.save()
+                serializer = self.get_serializer(data=u)
+                serializer.is_valid(raise_exception=True)
+                instance = serializer.save()
+                print(instance)
+                instance.set_password(str(u.get('password')))
+                instance.iam_account.add(tmp)
+                instance.save()
+            except Exception as e:
+                print(e)
+                continue
 
-
-            print(u)
-            tmp = IAMUser(
-                username=u.get('username'),
-                password=u.get('password'),
-                access_key=u.get('access_key'),
-                secret_key=u.get('secret_key'),
-                role=u.get('role')
-            )
-            tmp.save()
-            serializer = self.get_serializer(data=u)
-            serializer.is_valid(raise_exception=True)
-            instance = serializer.save()
-            print(instance)
-            instance.set_password(str(u.get('access_key')))
-            instance.iam_account.add(tmp)
-            instance.save()
         return Response({'msg': 'ok'}, status=200)
