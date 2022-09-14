@@ -40,6 +40,7 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('api/accounts/', include('realEstate.apps.accounts.urls')),
     path('api/projects/', include('realEstate.apps.projects.urls')),
-    path('api/core/',include('realEstate.apps.core.urls'))
+    path('api/core/',include('realEstate.apps.core.urls')),
+    path('api/products/',include('realEstate.apps.products.urls'))
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -97,8 +97,8 @@ DATABASES = {
         'NAME': 'oct_real_estate',
         'USER': 'oct',
         'PASSWORD': 'EhSxxjIsaW4XwozZ0*',
-        'HOST': '172.25.118.13',
-        'PORT': '6432',
+        'HOST': '121.37.4.150',
+        'PORT': '15475',
     }
 }
 
