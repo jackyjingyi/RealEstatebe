@@ -94,11 +94,11 @@ WSGI_APPLICATION = 'realEstate.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'oct_real_estate',
-        'USER': 'oct',
-        'PASSWORD': 'EhSxxjIsaW4XwozZ0*',
-        'HOST': '121.37.4.150',
-        'PORT': '15475',
+        'NAME': '*****',
+        'USER': '***',
+        'PASSWORD': '*******',
+        'HOST': '******',
+        'PORT': '*****',
     }
 }
 
